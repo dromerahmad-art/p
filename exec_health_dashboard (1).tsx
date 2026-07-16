@@ -150,6 +150,21 @@ const stepStatus = {
   pending: { bg: GRAY_L, color: GRAY, label: "Pending" },
 };
 
+
+const localAssistantSources = [
+  { label: "Documents", detail: "Policy files, SOPs, meeting notes", color: BLUE, bg: BLUE_L },
+  { label: "Research", detail: "Clinical evidence and benchmarks", color: TEAL, bg: TEAL_L },
+  { label: "Certificates", detail: "Accreditation and compliance artifacts", color: AMBER, bg: AMBER_L },
+  { label: "Photos", detail: "Facility evidence and scanned material", color: PURPLE, bg: PURPLE_L },
+  { label: "Hard Disk", detail: "Local folders and secured archives", color: GRAY, bg: GRAY_L },
+];
+
+const localAssistantPillars = [
+  { label: "File System", detail: "Documents, research, certificates, photos, hard disk", color: BLUE, bg: BLUE_L },
+  { label: "Local Database", detail: "SQLite index, metadata, search index", color: TEAL, bg: TEAL_L },
+  { label: "AI Models", detail: "GPT reasoning with local embeddings", color: PURPLE, bg: PURPLE_L },
+];
+
 const TABS = ["Overview", "Patient Experience", "System KPIs", "AI Governance", "Vision 2030", "PXCM Command"];
 const PXCM_SECTIONS = ["Architecture", "Roadmap", "Roles", "KPI Tiers", "Policy Cycle", "Success Metrics"];
 
@@ -197,6 +212,45 @@ function AnomalyPanel() {
         })}
       </div>
     </div>
+  );
+}
+
+
+function LocalAssistantArchitecture() {
+  return (
+    <Card>
+      <SectionHeader title="Local AI assistant architecture" sub="OpenAI Codex CLI pattern for private, on-device knowledge retrieval" />
+      <div style={{ background: "#fbfaf6", border: "0.5px solid #e0ddd5", borderRadius: 14, padding: 18 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+          <div style={{ background: "#fff", border: `1px solid ${AMBER}`, borderRadius: 14, padding: "16px 22px", textAlign: "center", boxShadow: "0 8px 24px rgba(44,44,42,0.06)", minWidth: 300 }}>
+            <div style={{ fontSize: 15, fontWeight: 600, color: "#2C2C2A" }}>Local AI Assistant</div>
+            <div style={{ fontSize: 12, color: GRAY, marginTop: 3 }}>OpenAI Codex CLI</div>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, alignItems: "stretch" }}>
+          {localAssistantPillars.map(p => (
+            <div key={p.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 1, height: 26, background: "#d7d2c8" }} />
+              <div style={{ background: p.bg, borderRadius: 12, padding: "14px 12px", width: "100%", minHeight: 112, textAlign: "center", border: `0.5px solid ${p.color}33` }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: p.color, marginBottom: 6 }}>{p.label}</div>
+                <div style={{ fontSize: 12, color: GRAY, lineHeight: 1.5 }}>{p.detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+          {localAssistantSources.map(source => (
+            <div key={source.label} style={{ background: source.bg, color: source.color, borderRadius: 10, padding: "10px 8px", minHeight: 78 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>{source.label}</div>
+              <div style={{ fontSize: 10.5, color: GRAY, lineHeight: 1.35 }}>{source.detail}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ fontSize: 11, color: GRAY, lineHeight: 1.6, marginTop: 10 }}>
+        Files stay local, SQLite stores searchable metadata and embeddings, and GPT/Codex uses retrieved context to answer operational questions without replacing the source-of-truth documents.
+      </div>
+    </Card>
   );
 }
 
@@ -338,6 +392,7 @@ function OverviewTab() {
           })}
         </Card>
       </div>
+      <LocalAssistantArchitecture />
       <AIPanel />
     </div>
   );
